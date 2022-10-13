@@ -18,8 +18,12 @@
         }
 
         .form {
-            margin-left: 330px;
-            margin-right: 330px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .center {
+            text-align: center;
         }
 
         .form-item {
@@ -35,11 +39,11 @@
 
 <body>
     <div class="container">
-        <h1 class="item title">Signus</h1>
-        <h2 class="item title">Descubra seu signo!</h2>
-        <div class="item form">
+        <h1 class="title">Signus</h1>
+        <h2 class="title">Descubra seu signo!</h2>
+        <div class="form">
             <form method="GET" action="signos-sucesso.html">
-                <div id="date" class="form-item">
+                <div class="form-item">
                     <label for="date-input">Data de Nascimento</label>
                     <input id="date-input" name="date-input" type="Date" required="true">
                 </div>
