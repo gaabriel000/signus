@@ -1,0 +1,188 @@
+<!doctype HTML>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Signus</title>
+    <style>
+        .container {
+            max-width: 880px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 15px 30px 15px 30px;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .form {
+            margin-left: 330px;
+            margin-right: 330px;
+        }
+
+        .form-item {
+            margin-top: 10px;
+        }
+
+        input,
+        label {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="center">Signus</h1>
+        <h2 class="center">Descubra seu signo!</h2>
+
+        <div class="center">
+            <h3>Signo</h3>
+            <p id="title"></p>
+
+            <h3>Período</h3>
+            <p id="range"></p>
+
+            <h3>Descrição</h3>
+            <p id="desc"></p>
+        </div>
+    </div>
+    <script>
+        let xml = loadXML();
+        let parser, xmlDoc;
+        parser = new DOMParser();
+        xmlDoc = parser.parseFromString(xml, "text/xml");
+        date = loadDate();
+
+        let title, dateIni, dateEnd, desc;
+        let found = false;
+
+        for (let i = 0; !found; i++) {
+            dateIni = getXMLValue("dataInicio", i);
+            dateEnd = getXMLValue("dataFim", i);
+            found = checkDate(dateIni, dateEnd, date)
+            if (found) {
+                document.getElementById("title").innerHTML = getXMLValue("signoNome", i);
+                document.getElementById("desc").innerHTML = getXMLValue("descricao", i);
+                document.getElementById("range").innerHTML = "de " + getXMLValue("dataInicio", i) + " até " + getXMLValue("dataFim", i);
+            }
+        }
+
+        function checkDate(dateIni, dateEnd, date) {
+            var d1 = dateIni.split("/");
+            var d2 = dateEnd.split("/");
+            var c = date.split("-");
+
+            var from = new Date(2000, parseInt(d1[1]) - 1, d1[0]);
+            var to = new Date(2000, parseInt(d2[1]) - 1, d2[0]);
+            var check = new Date(2000, parseInt(c[1]) - 1, c[2]);
+
+            if (to < from) {
+                to = new Date(2001, parseInt(d2[1]) - 1, d2[0]);
+            }
+
+            return check >= from && check <= to;
+        }
+
+        function loadDate() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('date-input')
+        }
+
+        function getXMLValue(param, index) {
+            return xmlDoc.getElementsByTagName(param)[index].childNodes[0].nodeValue;
+        }
+
+        function loadXML() {
+            return "<signos>" +
+                "<signo>" +
+                "<dataInicio>21/03</dataInicio>" +
+                "<dataFim>19/04</dataFim>" +
+                "<signoNome>Áries</signoNome>" +
+                "<descricao>Quem tem sol em Áries costuma viver no agora; além de possuir um grande prazer em existir, ação e decisão também podem ser algumas de suas marcas. A liderança é uma característica forte no signo, que pode ser usada para o empreendedorismo.</descricao>" +
+                "</signo>" +
+
+                "<signo>" +
+                "<dataInicio>20/04</dataInicio>" +
+                "<dataFim>20/05</dataFim>" +
+                "<signoNome>Touro</signoNome>" +
+                "<descricao>Quem tem sol em Touro costuma não abrir mão do que traz conforto e bem-estar, mas pode ter a possessividade em evidência. O signo preza pela beleza física e pela gula. A satisfação de Touro vem do contato com todos os cinco sentidos.</descricao>" +
+                "</signo>" +
+
+                "<signo>" +
+                "<dataInicio>21/05</dataInicio>" +
+                "<dataFim>21/06</dataFim>" +
+                "<signoNome>Gêmeos</signoNome>" +
+                "<descricao>Quem tem sol em Gêmeos costuma apreciar novas ideias, novos lugares e novas pessoas. Gêmeos tem carisma de sobra e tende a fazer amigos com muita facilidade. A superficialidade e a inconsequência também podem ser algumas das marcas do signo.</descricao>" +
+                "</signo>" +
+
+                "<signo>" +
+                "<dataInicio>22/06</dataInicio>" +
+                "<dataFim>22/07</dataFim>" +
+                "<signoNome>Câncer</signoNome>" +
+                "<descricao>Quem tem sol em Câncer costuma buscar o que lhe traz segurança. O signo é maternal e emotivo e tem uma proximidade com o apego ao passado. Câncer costuma ter a intuição acentuada, sentir as coisas no ar e captar tudo logo no primeiro olhar.</descricao>" +
+                "</signo>" +
+
+                "<signo>" +
+                "<dataInicio>23/07</dataInicio>" +
+                "<dataFim>22/08</dataFim>" +
+                "<signoNome>Leão</signoNome>" +
+                "<descricao>Quem tem sol em Leão costuma amar plateias e aplausos. O signo tem a coragem e o humor como marcas registradas, mas também o orgulho e o autoritarismo. Leão geralmente valoriza as oportunidades e aproveita cada momento, sabe amar e ter generosidade.</descricao>" +
+                "</signo>" +
+
+                "<signo>" +
+                "<dataInicio>23/08</dataInicio>" +
+                "<dataFim>22/09</dataFim>" +
+                "<signoNome>Virgem</signoNome>" +
+                "<descricao>Quem tem sol em Virgem costuma buscar constantemente a perfeição, tudo sempre poderia estar um pouco melhor. Signo observador, que costuma identificar o detalhe que ninguém mais percebe. Virgem tem praticidade e organização, mas também pode ser frio e cético.</descricao>" +
+                "</signo>" +
+
+                "<signo>" +
+                "<dataInicio>23/09</dataInicio>" +
+                "<dataFim>22/10</dataFim>" +
+                "<signoNome>Libra</signoNome>" +
+                "<descricao>Quem tem sol em Libra costuma buscar sempre o equilíbrio e conviver com a indecisão. Regido por Vênus, o signo tem uma aproximação natural com as artes. Libra costuma ter ética, mas também pode ter vaidade em excesso e comportamentos considerados de “mau gosto”.</descricao>" +
+                "</signo>" +
+
+                "<signo>" +
+                "<dataInicio>23/10</dataInicio>" +
+                "<dataFim>21/11</dataFim>" +
+                "<signoNome>Escorpião</signoNome>" +
+                "<descricao>Quem tem sol em Escorpião costuma ter muita perspicácia, não é a toa que são naturalmente detetives. O sexto sentido do signo alerta para possíveis “perigos” logo de cara. Escorpião tem uma capacidade de regeneração única, mas também pode ter muitos ciúmes.</descricao>" +
+                "</signo>" +
+
+                "<signo>" +
+                "<dataInicio>22/11</dataInicio>" +
+                "<dataFim>21/12</dataFim>" +
+                "<signoNome>Sagitário</signoNome>" +
+                "<descricao>Quem tem sol em Sagitário costuma ser viajante, sua casa é o mundo inteiro. O signo viaja muito também em sua própria mente. Não tente aprisionar Sagitário de nenhuma forma, ele não aceita limites. Otimista e jovial, pode ter exageros e uma dose de deboche.</descricao>" +
+                "</signo>" +
+
+                "<signo>" +
+                "<dataInicio>22/12</dataInicio>" +
+                "<dataFim>19/01</dataFim>" +
+                "<signoNome>Capricórnio</signoNome>" +
+                "<descricao>Quem tem sol em Capricórnio costuma ter seus propósitos e metas bem definidos. Signo de praticidade que segue as regras do jogo tem total noção dos seus limites. Capricórnio é maduro e bem humorado, mas também pode ser frio nas relações e um tanto pessimista.</descricao>" +
+                "</signo>" +
+
+                "<signo>" +
+                "<dataInicio>20/01</dataInicio>" +
+                "<dataFim>18/02</dataFim>" +
+                "<signoNome>Aquário</signoNome>" +
+                "<descricao>Quem tem sol em Aquário costuma ter a amizade como cartão de visita e ter uma conexão intensa com a liberdade. Signo idealista, tende a dar preferência aos diálogos racionais. Aquário é solidário e humano, também pode ser radical e bem “do contra”.</descricao>" +
+                "</signo>" +
+
+                "<signo>" +
+                "<dataInicio>19/02</dataInicio>" +
+                "<dataFim>20/03</dataFim>" +
+                "<signoNome>Peixes</signoNome>" +
+                "<descricao>Quem tem sol em Peixes costuma entender tudo sem precisar de muitas palavras, possuem uma sensibilidade superior. Signo compassivo e inspirador, Peixes tende a ter uma forte conexão com a espiritualidade, mas pode se iludir com certa facilidade.</descricao>" +
+                "</signo>" +
+                "</signos>"
+        }
+    </script>
+</body>
+
+</html>
